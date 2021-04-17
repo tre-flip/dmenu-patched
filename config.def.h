@@ -25,3 +25,6 @@ static unsigned int columns    = 0;
  * for example: " /?\"&[]"
  */
 static const char worddelimiters[] = " ";
+
+/* Don't use prefix by default */
+static int use_prefix = 0;
