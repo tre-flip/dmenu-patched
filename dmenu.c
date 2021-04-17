@@ -516,18 +516,26 @@ insert:
 		}
 		break;
 	case XK_Tab:
-		if (!matches) break; /* cannot complete no matches */
-		strncpy(text, matches->text, sizeof text - 1);
-		text[sizeof text - 1] = '\0';
-		len = cursor = strlen(text); /* length of longest common prefix */
-		for (item = matches; item && item->text; item = item->right) {
-			cursor = 0;
-			while (cursor < len && text[cursor] == item->text[cursor])
-				cursor++;
-			len = cursor;
-		}
-		memset(text + len, '\0', strlen(text) - len);
-		break;
+	  if (use_prefix){
+	    if (!matches) break; /* cannot complete no matches */
+	    strncpy(text, matches->text, sizeof text - 1);
+	    text[sizeof text - 1] = '\0';
+	    len = cursor = strlen(text); /* length of longest common prefix */
+	    for (item = matches; item && item->text; item = item->right) {
+	      cursor = 0;
+	      while (cursor < len && text[cursor] == item->text[cursor])
+		cursor++;
+	      len = cursor;
+	    }
+	    memset(text + len, '\0', strlen(text) - len);
+	  }else{
+	    if(!sel)
+	      return;
+	    strncpy(text, sel->text, sizeof text - 1);
+	    cursor = strlen(text);
+	    match();
+	  }
+	  break;
 	}
 
 draw:
